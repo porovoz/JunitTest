@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 class UserTest {
     String login = "userTest";
     String email = "user@test.com";
+    String invalidLogin = "";
+    String invalidEmail = "usertestcom";
     User userTest = new User(login, email);
 
     @Test
@@ -26,10 +28,18 @@ class UserTest {
 
     @Test
     @DisplayName("E-mail validation")
-    void shouldValidateCharsInAnEmail() {
-        String email = userTest.getEmail();
-        Assertions.assertTrue(email.contains("@"), "E-mail must contain '@' symbol");
-        Assertions.assertTrue(email.contains("."), "E-mail must contain '.' symbol");
+    void shouldValidateCharsInEmail() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new User(login, invalidEmail);
+        }, "E-mail must be invalid to throw the exception to pass the test");
+    }
+
+    @Test
+    @DisplayName("Login validation")
+    void shouldValidateCharsInLogin() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new User(invalidLogin, email);
+        }, "Login must be invalid to throw the exception to pass the test");
     }
 
     @Test
